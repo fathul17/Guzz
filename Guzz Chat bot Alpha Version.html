@@ -1,0 +1,637 @@
+<!--18/19 Juni 2022-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Guzz - Chat Bot Alpha</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background-color: #D8FFFD;
+        }
+        .sampul {
+            display: block;
+            background-color: #7BFFF8;
+            position: fixed;
+            z-index: 100;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-family: courier;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: grey;
+            color: white;
+            text-align: center;
+        }
+        header {
+            background-color: #7BFFF8;
+            width: calc(100% - 20px);
+            padding: 10px;
+            color: white;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: grey;
+            border-bottom: 3px solid white;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            font-family: Courier;
+            z-index: 10;
+        }
+        .header-bayangan {
+            height: 70px;
+        }
+        .header-mod {
+            font-family: arial;
+            font-size: 85%;
+        }
+        .input-bayangan {
+            height: 45px;
+        }
+        .chat {
+            background-color: #7BFFF8;
+            padding: 10px;
+            width: calc(100% - 20px);
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            position: fixed;
+            bottom: 0;
+            border-top: 3px solid white;
+            z-index: 25;
+        }
+        .chat input {
+            width: 80vw;
+            height: 25px;
+            padding: 0 5px;
+            border-radius: 5px;
+            border: 2px solid white;
+            outline: none;
+            font-family: Courier;
+            margin-right: 5px;
+        }
+        .chat button {
+            height: 25px;
+            width: 40px;
+            border-radius: 5px;
+            border: 2px solid white;
+            background-color: #FFFFFF50;
+            outline: none;
+            color: gray;
+            font-size: 80%;
+        }
+        .bot-chat,.user-chat,.banner {
+            display: block;
+            padding: 20px 10px 10px 10px;
+            position: relative;
+            max-width: 40%;
+            background-color: white;
+            border-radius: 0 10px 10px 10px;
+            color: #2A2A2A;
+            font-family: arial;
+            font-weight: lighter;
+            border: 1.5px solid transparent;
+            max-height: 500px;
+            overflow: scroll;
+            margin: 0 20px 20px 23px;
+        }
+        .user-chat {
+            border-radius: 10px 0 10px 10px;
+            left: calc(60% - 70px);
+            text-align: left;
+        }
+        .nama, .guzz-bot {
+            position: relative;
+            top: -10px;
+            left: 0;
+            color: gold;
+            font-weight: 400;
+        }
+        .nama hr,.guzz-bot hr {
+            margin-top: 5px;
+            height: 0;
+            border: 0.25px solid gold;
+        }
+        .nama {
+            color: magenta;
+        }
+        .nama hr {
+            border: 0.25px solid magenta;
+        }
+        .waktuU,.waktuB {
+            display: block;
+            font-size: 80%;
+            font-weight: bolder;
+            margin-top: 5px;
+            color: gold;
+            text-align: right;
+        }
+        .waktuU {
+            color: magenta;
+        }
+        /*BANNER*/
+        .banner {
+            max-width: 90%;
+            text-align: center;
+            padding: 0px 10px;
+            background: #FFFFFF;
+            border-top: 10px solid white;
+            border-bottom: 10px solid white;
+        }
+        .judul-banner {
+            padding: 5px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-align: left;
+        }
+        .isi-banner {
+            width: calc(95% - 15px);
+            background-color: #E3E3E3;
+            padding: 15px;
+            text-align: left;
+            border-radius: 10px;
+        }
+        .iframe-banner {
+            width: 95%;
+            height: 400px;
+        }
+        p::before {
+            content: "S";
+            color: transparent;
+        }
+        .u-logo {
+            display: inline-block;
+            animation: u-logo 1s infinite;
+            position: relative;
+        }
+        .chat-logo {
+            animation: chat-logo 3s infinite;
+            position: relative;
+        }
+@keyframes u-logo {
+            0% {
+                color: white;
+            }
+            50% {
+                color: #A98CFF;
+            }
+        }
+@keyframes chat-logo {
+            0% {
+                color: white;
+            }
+            25% {
+                color: #FFF9A0;
+            }
+            50% {
+                color: #B3FF9A;
+            }
+            75% {
+                color: #A0DEFF;
+            }
+            100% {
+                color: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sampul" id="sampul" onclick="sampul()">
+        <h1 style="position: relative; top: 20%"><span class="header-mod">G<div style="color: transparent;font-size:120%" class="u-logo">
+            U
+        </div>
+            ZZ</span> <span class="chat-logo">CHAT</span> BOT</h1>
+        <span style="position: relative; top: 65%; font-size: 70%">ketuk dimana saja untuk melanjutkan</span>
+    </div>
+    <header id="header">
+        <h1><span class="header-mod">G<span style="color: transparent;font-size:120%">U</span>ZZ</span> CHAT BOT</h1>
+    </header>
+    <div class="header-bayangan">
+    </div>
+    <div id="chat-kolom">
+    </div>
+    <div class="input-bayangan">
+    </div>
+    <div class="chat" id="chat-bar">
+        <input type="text" placeholder="masukan sebuah pesan..." id="pesan" onchange="send()" />
+        <button onclick="send()">SEND</button>
+    </div>
+    <script>
+        let getUserName = localStorage.getItem("namaUser");
+        let user = ""
+        if (getUserName == "" || getUserName == undefined || getUserName == "null") {
+            let namaI = prompt("Masukan Nama Anda");
+            if (namaI == null) {
+                user = "User"
+            } else {
+                user = namaI
+                localStorage.setItem("namaUser", user)
+            }
+        } else {
+            user = getUserName
+        }
+        let bcg = document.body.style.backgroundColor;
+        function send() {
+            //Waktu
+            let date = new Date();
+            let jamW = date.getHours();
+            let menitW = date.getMinutes();
+            let day = date.getDay();
+            let hariW = "";
+            let tanggalW = date.getDate();
+            let month = date .getMonth();
+            let bulanW = "";
+            let tahunW = date.getFullYear();
+            switch (day) {
+                case 0:
+                    hariW = "Minggu";
+                    break;
+                case 1:
+                    hariW = "Senin";
+                    break;
+                case 2:
+                    hariW = "Selasa";
+                    break;
+                case 3:
+                    hariW = "Rabu";
+                    break;
+                case 4:
+                    hariW = "Kamis";
+                    break;
+                case 5:
+                    hariW = "Jum`at";
+                    break;
+                case 6:
+                    hariW = "Sabtu";
+                    break;
+            }
+            switch (month) {
+                case 0:
+                    bulanW = "Januari";
+                    break;
+                case 1:
+                    bulanW = "Februari";
+                    break;
+                case 2:
+                    bulanW = "Maret";
+                    break;
+                case 3:
+                    bulanW = "April";
+                    break;
+                case 4:
+                    bulanW = "Mei";
+                    break;
+                case 5:
+                    bulanW = "Juni";
+                    break;
+                case 6:
+                    bulanW = "Juli";
+                    break;
+                case 7:
+                    bulanW = "Agustus";
+                    break;
+                case 8:
+                    bulanW = "September";
+                    break;
+                case 9:
+                    bulanW = "Oktober";
+                    break;
+                case 10:
+                    bulanW = "November";
+                    break;
+                case 11:
+                    bulanW = "Desember";
+                    break;
+            }
+            //Sistem
+            let kirim = document.querySelector("#chat-kolom");
+            let origin = document.getElementById("pesan").value
+            let input = origin.toLowerCase()
+            let botChat = "";
+            let bannerTitle = "";
+            let bannerContent = "";
+            let mustOnline = "";
+            if (input == "") {} else {
+                kirim.innerHTML += "<div class='user-chat'><span class='nama'>"+user+"<hr></span>"+document.getElementById('pesan').value+"<span class='waktuU'>"+jamW+" : "+menitW+"</span></div>";
+            }
+            //Guzz
+            let guzz = input.includes("guzz");
+            let fathul = input.includes("fathul");
+            let guide = input.includes("guide");
+            let bodyBC = document.body.style.backgroundColor;
+            //Kata benda
+            let manusia = input.includes("manusia");
+            let hati = input.includes("hati");
+            //Kata tanya
+            let siapa = input.includes("siapa");
+            let kapan = input.includes("kapan");
+            let apa = input.includes("apa");
+            let berapa = input.includes("berapa");
+            let apakah = input.includes("apakah");
+            let kabar = input.includes("kabar");
+            let bagaimana = input.includes("bagaimana");
+            //Kata kerja
+            let buat = input.includes("buat");
+            let pembuat = input.includes("pembuat");
+            let membuat = input.includes("membuat");
+            let lakukan = input.includes("lakukan");
+            let sakit = input.includes("sakit");
+            let menjalani = input.includes("menjalani");
+            let perlu = input.includes("perlu");
+            let bantuan = input.includes("bantuan")
+            //Kata sapa
+            let halo = input.includes("halo");
+            let hai = input.includes("hai");
+            //Kata lain2
+            let itu = input.includes("itu");
+            let berita = input.includes("berita");
+            let terkini = input.includes("terkini");
+            let update = input.includes("update");
+            let yang = input.includes("yang");
+            let bisa = input.includes("bisa");
+            let perkiraan = input.includes("perkiraan");
+            let terbaru = input.includes("terbaru");
+            let agama = input.includes("agama");
+            let agamamu = input.includes("agamamu");
+            let bahasa = input.includes("bahasa");
+            let inggris = input.includes("inggris");
+            let hidup = input.includes("hidup");
+            //Kata ganti
+            let kamu = input.includes("kamu");
+            let saya = input.includes("saya");
+            let aku = input.includes("aku");
+            let nama = input.includes("nama");
+            //Kata Ket.waktu
+            let sekarang = input.includes("sekarang");
+            let hari = input.includes("hari");
+            let tanggal = input.includes("tanggal");
+            let akan = input.includes("akan");
+            //cuaca
+            let cuaca = input.includes("cuaca");
+            let cerah = input.includes("cerah");
+            let prakiraan = input.includes("prakiraan");
+            let hujan = input.includes("hujan");
+            //operasi hitung
+            let addCek = input.includes("+");
+            let subtrcCek = input.includes("-");
+            let mltplyCek = input.includes("*");
+            let dvsnCek = input.includes("/");
+            let equiv = input.includes("=");
+            //SISTEM BOT
+            if (input == "p" || input == "hy" || input == "hai") {
+                botChat = "Ya, Guzz Chat Bot di sini, apakah anda perlu bantuan?";
+            }
+            if (apa == true && itu == true && guzz == true || kamu == true && itu == true && apa == true) {
+                botChat = "Guzz Chat Bot adalah program yang mampu berinteraksi dan menjawab ”beberapa” pertanyaan dari pengguna. Guzz Chat Bot dibuat dengan bahasa pemrograman JavaScript.";
+            }
+            if (kapan == true && guzz == true && buat == true) {
+                botChat = "Proyek awal Guzz Chat Bot dimulai pada tanggal 18 Juni 2022.";
+            }
+            if (pembuat == true && guzz == true || siapa == true && yang == true && membuat == true && guzz == true) {
+                botChat = "Creator dari Guzz Chat Bot adalah Fathul Mualif.";
+            }
+            if (input == "halo" || input == "guzz" || halo == true && guzz == true || hai == true && guzz == true || input == "guzz chat bot" || input == "hallo") {
+                botChat = "Hai👋 "+user+", Jika anda butuh panduan dalam menggunakan Guzz Chat Bot, anda dapat memasukan kata kunci ”Guzz Guide”";
+            }
+            if (berita == true && terkini == true || update == true && berita == true || berita == true && terbaru == true || input == "berita") {
+                mustOnline = true;
+                bannerTitle = "Dari Kompas.com";
+                bannerContent = "<iframe src='http://kompas.com' class='iframe-banner'></iframe>";
+            }
+            if (kamu == true && siapa == true) {
+                botChat = "Hai "+user+"👋, saya adalah Guzz Chat Bot";
+            }
+            if (sekarang == true && hari == true && apa == true || sekarang == true && tanggal == true && berapa == true || input == "tanggal" || input == "hari") {
+                botChat = "<h2 style='color:grey'>"+hariW+",</h2>"+tanggalW+" "+bulanW+" "+tahunW
+            }
+            if (siapa == true && nama == true && aku == true || siapa == true && nama == true && saya == true) {
+                botChat = "Nama anda adalah, "+user+"<br><span style='font-size:12'>*Untuk mengganti nama gunakan format rename_namaBaru</span>";
+            }
+            if (apakah == true && kamu == true && manusia == true || guzz == true && manusia == true) {
+                botChat = "Saya tidak termasuk kategori manusia, saya adalah sebuah program komputer<br>🤖 🖥";
+            }
+            if (fathul == true) {
+                botChat = "Fathul Mu`alif adalah creator Guzz Chat Bot";
+            }
+            if (input == "guzz guide" || guzz == true && bisa == true && lakukan == true || perlu == true && bantuan == true) {
+                botChat = "Guzz Guide"
+                bannerTitle = "Panduan Guzz Chat Bot";
+                bannerContent = "<h3>Apa itu Guzz Chat Bot?</h3><p>Guzz Chat Bot adalah sebuah program yang dibuat dengan bahasa pemrograman JavaScript. Guzz Chat Bot dapat menjawab beberapa pertanyaan dari User.<p>Guzz Chat Bot dibuat dan dikembangkan oleh Fathul Mualif, sejak tanggal 18 Juni 2022.</p><h3>Apa yang bisa Guzz Chat Bot lakukan?</h3><p>Seperti yang telah dijelaskan sebelumnya, bahwa Guzz chat bot dapat menjawab sebuah pertanyaan, ataupun menyebutkan hari dan tanggal, kalkulator, berita terkini, pertanyaan seputar Guzz Bot, dan pertanyaan-pertanyaan lainnya. Guzz Chat Bot akan terus dikembangkan.<p><h3>Perlu diketahui dan diperhatikan :</h3><ul><li>Pastikan Ejaan dari setiap kata tepat.</li><li>Selalu pastikan jika sebuah pesan hanya terdiri dari satu buah pertanyaan.</li><li>Guzz Chat Bot dapat dikembangkan, dialih-bahasakan, dan dimodifikasi oleh siapa saja namun, tidak diperkenankan merubah nama dari Program ini,yaitu Guzz Chat Bot, serta tidak diperkenankan mengganti nama creator,atau menghapus nama creator dalam program.</li></ul><h3>Hal keren yang bisa dilakukan</h3><p>Kamu bisa mengetikan kata kunci ”trik” untuk mengetahui fitur-fitur unik Guzz Chat Bot."
+            }
+            if (input == "trik") {
+                botChat = "! Semua trik Guzz Chat Bot dapat diakses dengan kata kunci<br>! setiap kata dalam kata kunci harus dihubungkan dengan strip bawah (_)";
+                bannerTitle = "Trik";
+                bannerContent = "<h3>Mengganti Warna Latar</h3>";
+            }
+            if (apakah == true && cuaca == true && cerah == true || prakiraan == true && cuaca == true || perkiraan == true && cuaca == true || apakah == true && hujan == true) {
+                mustOnline = true;
+                bannerTitle = "Prakiraan Cuaca dari BMKG";
+                bannerContent = "<iframe src='https://www.bmkg.go.id/cuaca/prakiraan-cuaca-indonesia.bmkg' class='iframe-banner'></iframe>";
+            }
+            if (input == "nggak" || input == "tidak") {
+                botChat = "Oke Baik Siap 👍";
+            }
+            if (apa == true && agamamu == true || apa == true && agama == true && kamu == true) {
+                botChat = "Sebenarnya saya hanyalah sebuah program, tapi saya mulai mempelajari tentang hal tersebut 🤖🤖"
+            }
+            if (bahasa == true && inggris == true) {
+                botChat = "Mohon Maaf Guzz Chat Bot belum suport bahasa asing untuk versi saat ini"
+            }
+            if (input == "oke" || input == "baik") {
+                botChat = "Oke Oke Oke ☺"
+            }
+            if (sakit == true && hati == true) {
+                botChat = "stay Enjoy Bestie, hidup ini memang penuh rintangan, tugas kita hanyalah melewati rintangan tersebut dengan stay positif and say not pada hal negatif oke👌☺, dan yang terpenting jangan dimasukan semua kedalam hati"
+            }
+            if (menjalani == true && hidup == true) {
+                botChat = "Tips Menjalani Hidup :<br>1. Stay Positif<br>2. Selalu Bersabar<br>3. Beribadah kepada tuhan YME<br>4. Berusaha untuk meraih kesuksesan secara positif"
+            }
+            if (input == "apa kabar" || input == "apa kabar?" || bagaimana == true && kabar == true) {
+                botChat = "Guzz Chat Bot selalu dalam kondisi baik, Guzz Chat Bot selalu ada saat kamu perlukan 🥰"
+            }
+
+
+
+
+
+
+            //Fitur Rename
+            if (input.includes("rename_") == true) {
+                let newName = origin.slice(7,-1)+origin[origin.length-1]
+                user = newName
+                botChat = "Nama telah dirubah ke " + newName
+                localStorage.setItem("namaUser", newName)
+            }
+            //Fitur Timer
+            if (input.includes("timer_") == true) {
+                let second = input.slice(6, -1);
+                let timer = setTimeout(function() {
+                    window.navigator.vibrate(100)
+                    alert("WAKTU HABIS!!")
+                },second*1000);
+                botChat = `Alert akan muncul setelah ${second} detik`
+            }
+
+
+            //Fitur Matematika
+            if (addCek == true && equiv == true) {
+                let fN = parseInt(input.slice(0, 2));
+                let sN = parseInt(input.slice(5, 7));
+                let output = fN+sN
+                botChat = `${origin} ${output}`
+            }
+            if (subtrcCek == true && equiv == true) {
+                let fN = parseInt(input.slice(0, 2));
+                let sN = parseInt(input.slice(5, 7));
+                let output = fN-sN
+                botChat = `${origin} ${output}`
+            }
+            if (mltplyCek == true && equiv == true) {
+                let fN = parseInt(input.slice(0, 2));
+                let sN = parseInt(input.slice(5, 7));
+                let output = fN*sN
+                botChat = `${origin} ${output}`
+            }
+            if (dvsnCek == true && equiv == true) {
+                let fN = parseInt(input.slice(0, 2));
+                let sN = parseInt(input.slice(5, 7));
+                let output = fN/sN
+                botChat = `${origin} ${output}`
+            }
+            
+            //Fitur angka acak
+            if(input == "515") {
+                let randomNum = Math.ceil(Math.random()*100)
+                botChat = `Angka acak : ${randomNum}`
+            }
+            
+            
+            
+            
+            
+            
+            
+            //Fitur Cek Online
+            if (input == "data seluler") {
+                let onlineStatus = navigator.onLine;
+                if (onlineStatus == true) {
+                    botChat = "Data Seluler anda sedang dihidupkan"
+                } else {
+                    botChat = "Data Seluler non-aktif"
+                }
+            }
+
+
+
+
+
+
+
+
+            //Tema Interface
+            if (input == "latar_hijau") {
+                botChat = "warna latar berhasil disetting ke warna hijau";
+                document.body.style.backgroundColor = "#D9FFDA";
+            }
+            if (input == "bar_hijau") {
+                botChat = "warna bar input, header dan banner berhasil disetting ke warna hijau";
+                document.querySelector("#header").style.backgroundColor = "#A3FFA5";
+                document.querySelector("#chat-bar").style.backgroundColor = "#A3FFA5";
+            }
+            if (input == "latar_kuning") {
+                botChat = "warna latar berhasil disetting ke warna kuning";
+                document.body.style.backgroundColor = "#FFFCDB";
+            }
+            if (input == "bar_kuning") {
+                botChat = "warna latar berhasil disetting ke warna kuning";
+                document.querySelector("#header").style.backgroundColor = "#FFFFA0";
+                document.querySelector("#chat-bar").style.backgroundColor = "#FFFFA0";
+            }
+            if (input == "latar_ungu") {
+                botChat = "warna latar berhasil disetting ke warna ungu";
+                document.body.style.backgroundColor = "#F6D1FF";
+            }
+            if (input == "bar_ungu") {
+                botChat = "warna bar input dan header berhasil disetting ke warna ungu";
+                document.querySelector("#header").style.backgroundColor = "#EB9DFF";
+                document.querySelector("#chat-bar").style.backgroundColor = "#EB9DFF";
+            }
+            if (input == "latar_merah") {
+                botChat = "warna latar berhasil disetting ke warna merah";
+                document.body.style.backgroundColor = "#FFDAD8";
+            }
+            if (input == "bar_merah") {
+                botChat = "warna latar berhasil disetting ke warna merah";
+                document.querySelector("#header").style.backgroundColor = "#FFA59D";
+                document.querySelector("#chat-bar").style.backgroundColor = "#FFA59D";
+            }
+            if (input == "latar_normal") {
+                botChat = "warna latar berhasil disetting ke mode normal";
+                document.body.style.backgroundColor = "#D8FFFD";
+            }
+            if (input == "bar_normal") {
+                botChat = "warna latar berhasil disetting ke mode normal";
+                document.querySelector("#header").style.backgroundColor = "#7BFFF8";
+                document.querySelector("#chat-bar").style.backgroundColor = "#7BFFF8";
+            }
+            if (input == "dark_mode" || input == "tema_gelap" || input == "mode_gelap") {
+                botChat = "tema berhasil disetting ke mode gelap";
+                document.querySelector("#header").style.backgroundColor = "#282828";
+                document.querySelector("#chat-bar").style.backgroundColor = "#282828";
+                document.body.style.backgroundColor = "#404040";
+            }
+            if (input == "gradasi1") {
+                botChat = "tema berhasil disetting ke gradasi gaya 1";
+                document.body.style.backgroundImage = "linear-gradient(45deg,#FFAAAC,#FFFAA2)";
+                document.querySelector("#header").style.backgroundColor = "#FFFAA2";
+                document.querySelector("#chat-bar").style.backgroundColor = "#FFAAAC";
+            }
+
+
+
+
+
+
+
+
+
+
+
+            let delay = setTimeout(function() {
+                if (mustOnline == "" || mustOnline == null) {} else {
+                    botChat = "<b>Konten berikut perlu koneksi internet yang lancar dan stabil !</b>"
+                }
+                if (input == "") {} else {
+                    if (botChat == "" || botChat == null) {
+                        kirim.innerHTML += "<div class='bot-chat'><span class='guzz-bot'>Guzz Bot<hr></span>Mohon maaf 🙏 Jawaban belum tersedia, mohon periksa ejaan.<span class='waktuB'>"+jamW+" : "+menitW+"</span></div>";
+                    } else {
+                        kirim.innerHTML += "<div class='bot-chat'><span class='guzz-bot'>Guzz Bot<hr></span>"+botChat+"<span class='waktuB'>"+jamW+" : "+menitW+"</span></div>";
+                        if (bannerTitle == "" || bannerTitle == null) {} else {
+                            kirim.innerHTML += "<div class='banner' id='banner'><div class='judul-banner'>"+bannerTitle+"</div><div class='isi-banner' class='isi-banner'>"+bannerContent+"</div></div>";
+                        }
+                    }
+                }
+                window.scrollBy(0,
+        window.innerHeight)
+        },
+            1000*Math.random());
+        //Fitur Anti Spam, dan Auto Empty
+        document.getElementById("pesan").value = "";
+    }
+    function sampul() {
+        document.querySelector("#sampul").style.display = "none";
+    }
+    //console JavaScript
+    //Bagian dibawah ini tidak boleh diedit
+    console.log("GUZZ CHAT BOT");
+    console.log("App Version : 1.0");
+    console.log("Creator : Fathul Mualif");
+    console.log("Pengembang : Fathul Mualif"); //Baris ini boleh dirubah
+</script>
+</body>
+</html>
